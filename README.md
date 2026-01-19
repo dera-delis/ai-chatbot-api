@@ -1,33 +1,68 @@
-# AI Chatbot API
+# 🤖 **AI Chatbot API**
 
-Production-ready FastAPI backend for an authenticated, conversation-based AI chatbot. Built for real-world deployment with PostgreSQL, SQLAlchemy 2.0, Alembic, JWT auth, and OpenAI integration.
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.115-05998b?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-316192?logo=postgresql&logoColor=white)](https://postgresql.org/)
+[![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-2.0-red?logo=sqlalchemy&logoColor=white)](https://www.sqlalchemy.org/)
+[![Alembic](https://img.shields.io/badge/Alembic-Migrations-black)](https://alembic.sqlalchemy.org/)
+[![Docker](https://img.shields.io/badge/Docker-24.0-2496ED?logo=docker&logoColor=white)](https://docker.com/)
 
-## Architecture
-- `app/main.py`: FastAPI application entrypoint
-- `app/config.py`: environment-driven settings
-- `app/database.py`: SQLAlchemy engine/session + dependency
-- `app/models/`: SQLAlchemy models (`User`, `Conversation`, `Message`)
-- `app/schemas/`: Pydantic request/response models
-- `app/routers/`: API routes (`/auth`, `/chat`, `/conversations`)
-- `app/services/llm.py`: OpenAI chat completion integration
-- `app/utils/jwt.py`: JWT + password hashing utilities
-- `alembic/`: migration configuration
+Production-grade **FastAPI** backend for a conversation-aware AI assistant. Built with **PostgreSQL**, **SQLAlchemy 2.0**, **Alembic**, **JWT auth**, and **OpenAI** integration. Clean separation of concerns, typed IO, and deployment-ready Docker setup.
 
-## API Endpoints
+> ✅ **JWT Auth** · 🧠 **LLM Integration** · 🐳 **Dockerized** · 🧪 **Tested**
 
-Auth
-- `POST /auth/signup`
-- `POST /auth/login`
-- `GET /auth/me`
+---
 
-Chat
-- `POST /chat`
-- `GET /conversations`
-- `GET /conversations/{id}`
+## 📌 **Table of Contents**
+- [✨ Overview](#-overview)
+- [🏗️ Architecture](#️-architecture)
+- [🔐 Auth Endpoints](#-auth-endpoints)
+- [💬 Chat Endpoints](#-chat-endpoints)
+- [🧪 Example Request](#-example-request)
+- [⚙️ Environment](#️-environment)
+- [🚀 Local Setup](#-local-setup)
+- [🐳 Docker Setup](#-docker-setup)
+- [🧪 Testing](#-testing)
+- [📈 Portfolio Value](#-portfolio-value)
 
-## Example Request/Response
+---
 
-Request:
+## ✨ **Overview**
+This API powers a professional AI chat experience with secure user authentication, persistent conversations, and LLM-backed responses. It’s designed to be scalable, predictable, and easy to deploy.
+
+---
+
+## 🏗️ **Architecture**
+- `app/main.py`: FastAPI app + middleware
+- `app/config.py`: environment configuration
+- `app/database.py`: SQLAlchemy engine/session
+- `app/models/`: `User`, `Conversation`, `Message`
+- `app/schemas/`: request/response DTOs
+- `app/routers/`: `/auth`, `/chat`, `/conversations`
+- `app/services/llm.py`: OpenAI chat completions
+- `app/utils/jwt.py`: password hashing + JWT helpers
+- `alembic/`: migration tooling
+
+---
+
+## 🔐 **Auth Endpoints**
+```
+POST /auth/signup
+POST /auth/login
+GET  /auth/me
+```
+
+---
+
+## 💬 **Chat Endpoints**
+```
+POST /chat
+GET  /conversations
+GET  /conversations/{id}
+```
+
+---
+
+## 🧪 **Example Request**
 ```json
 {
   "message": "Hello",
@@ -43,25 +78,46 @@ Response:
 }
 ```
 
-## Local Setup
-1. Create `.env` from `.env.example`
-2. Install dependencies:
-   - `pip install -r requirements.txt`
-3. Run migrations:
-   - `alembic upgrade head`
-4. Start API:
-   - `uvicorn app.main:app --reload`
+---
 
-## Docker Setup
-1. Create `.env` from `.env.example`
-2. Run:
-   - `docker-compose up --build`
+## ⚙️ **Environment**
+Create `.env` from `.env.example`:
+```env
+DATABASE_URL=postgresql+psycopg2://ai_user:ai_password@localhost:5432/ai_chatbot
+JWT_SECRET_KEY=change_me
+JWT_ALGORITHM=HS256
+JWT_EXPIRE_MINUTES=30
+OPENAI_API_KEY=
+```
 
-## Testing
-- `pytest`
+---
 
-## Portfolio Value
-- Clean separation of concerns, secure JWT authentication, and SQLAlchemy 2.0 patterns
-- Production-grade logging, migrations, and Dockerized deployment
-- Scalable chat architecture with conversation history and LLM integration
+## 🚀 **Local Setup**
+```bash
+pip install -r requirements.txt
+alembic upgrade head
+uvicorn app.main:app --reload
+```
+
+---
+
+## 🐳 **Docker Setup**
+```bash
+docker-compose up --build
+```
+
+---
+
+## 🧪 **Testing**
+```bash
+pytest
+```
+
+---
+
+## 📈 **Portfolio Value**
+- Clean separation of concerns and typed IO models
+- Secure JWT authentication with bcrypt hashing
+- Conversation persistence and AI memory
+- Production-ready Docker + Alembic migrations
 
