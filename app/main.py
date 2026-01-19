@@ -1,4 +1,5 @@
 import logging
+import sys
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -8,6 +9,7 @@ from app.routers import auth, chat
 
 logging.basicConfig(
     level=logging.INFO,
+    stream=sys.stdout,
     format="%(asctime)s %(levelname)s %(name)s %(message)s",
 )
 
@@ -23,4 +25,9 @@ app.add_middleware(
 
 app.include_router(auth.router)
 app.include_router(chat.router)
+
+
+@app.get("/health", tags=["health"])
+def health_check() -> dict[str, str]:
+    return {"status": "ok"}
 
