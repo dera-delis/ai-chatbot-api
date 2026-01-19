@@ -109,3 +109,5 @@ pytest
 Cloud Run retains prior revisions. Roll back by re-deploying a previous image tag
 or selecting an earlier revision in Cloud Run.
 
+_Pipeline trigger note: update to validate CI/CD._
+
