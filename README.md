@@ -1,16 +1,15 @@
-# 🤖 **AI Chatbot API**
+# 🚀 **AI Chatbot API – DevOps Capstone**
 
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115-05998b?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-316192?logo=postgresql&logoColor=white)](https://postgresql.org/)
 [![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-2.0-red?logo=sqlalchemy&logoColor=white)](https://www.sqlalchemy.org/)
-[![Alembic](https://img.shields.io/badge/Alembic-Migrations-black)](https://alembic.sqlalchemy.org/)
 [![Docker](https://img.shields.io/badge/Docker-24.0-2496ED?logo=docker&logoColor=white)](https://docker.com/)
-[![Status](https://img.shields.io/badge/Status-Live%20Production-brightgreen)](https://p01--ai-chatbot-api--zn54zt65xhrv.code.run/docs)
-[![API Docs](https://img.shields.io/badge/API%20Docs-Swagger-green?style=for-the-badge)](https://p01--ai-chatbot-api--zn54zt65xhrv.code.run/docs)
+[![CI](https://img.shields.io/badge/CI-GitHub%20Actions-blue?logo=githubactions&logoColor=white)](./.github/workflows/ci.yml)
 
-Production-grade **FastAPI** backend for a conversation-aware AI assistant. Built with **PostgreSQL**, **SQLAlchemy 2.0**, **Alembic**, **JWT auth**, and **OpenAI** integration. Clean separation of concerns, typed IO, and deployment-ready Docker setup.
+**DevOps-focused capstone** showcasing production CI/CD for a real FastAPI backend.  
+Automated tests, Docker image builds, registry pushes, and Cloud Run deployments for **staging + production**.
 
-> ✅ **JWT Auth** · 🧠 **LLM Integration** · 🐳 **Dockerized** · 🧪 **Tested**
+> ✅ **Tests on every push** · 🐳 **Dockerized** · ☁️ **Cloud Run** · 🔐 **Secrets managed** · 📊 **Health checks**
 
 **Live API Docs:**  
 [![Open Docs](https://img.shields.io/badge/Open%20Docs-Live%20Swagger-1f9d6a?style=for-the-badge)](https://p01--ai-chatbot-api--zn54zt65xhrv.code.run/docs)
@@ -18,111 +17,95 @@ Production-grade **FastAPI** backend for a conversation-aware AI assistant. Buil
 ---
 
 ## 📌 **Table of Contents**
-- [✨ Overview](#-overview)
 - [🏗️ Architecture](#️-architecture)
-- [🔐 Auth Endpoints](#-auth-endpoints)
-- [💬 Chat Endpoints](#-chat-endpoints)
-- [🧪 Example Request](#-example-request)
-- [⚙️ Environment](#️-environment)
-- [🚀 Local Setup](#-local-setup)
-- [🐳 Docker Setup](#-docker-setup)
-- [🧪 Testing](#-testing)
-- [📈 Portfolio Value](#-portfolio-value)
-
----
-
-## ✨ **Overview**
-This API powers a professional AI chat experience with secure user authentication, persistent conversations, and LLM-backed responses. It’s designed to be scalable, predictable, and easy to deploy.
+- [🔎 Observability](#-observability)
+- [🧪 CI Pipeline](#-ci-pipeline)
+- [🚀 CD Pipelines](#-cd-pipelines)
+- [🔐 Secrets Management](#-secrets-management)
+- [📦 Docker](#-docker)
+- [🧪 Local Testing](#-local-testing)
+- [↩️ Rollback Strategy](#️-rollback-strategy)
 
 ---
 
 ## 🏗️ **Architecture**
-- `app/main.py`: FastAPI app + middleware
-- `app/config.py`: environment configuration
-- `app/database.py`: SQLAlchemy engine/session
-- `app/models/`: `User`, `Conversation`, `Message`
-- `app/schemas/`: request/response DTOs
-- `app/routers/`: `/auth`, `/chat`, `/conversations`
-- `app/services/llm.py`: OpenAI chat completions
-- `app/utils/jwt.py`: password hashing + JWT helpers
-- `alembic/`: migration tooling
+```
+GitHub -> GitHub Actions -> Artifact Registry -> Cloud Run (staging/prod)
+                                    |
+                                 PostgreSQL
+```
+
+Key components:
+- FastAPI backend under `app/`
+- Alembic migrations
+- Docker image built for Cloud Run
+- CI/CD workflows in `.github/workflows/`
 
 ---
 
-## 🔐 **Auth Endpoints**
-```
-POST /auth/signup
-POST /auth/login
-GET  /auth/me
-```
+## 🔎 **Observability**
+- **Health check:** `GET /health`
+- Structured, stdout logging (Cloud Run friendly)
 
 ---
 
-## 💬 **Chat Endpoints**
-```
-POST /chat
-GET  /conversations
-GET  /conversations/{id}
-```
+## 🧪 **CI Pipeline**
+Workflow: `.github/workflows/ci.yml`
+- Runs on every push and pull request
+- Installs dependencies
+- Executes `pytest`
+- Fails fast on any error
 
 ---
 
-## 🧪 **Example Request**
-```json
-{
-  "message": "Hello",
-  "conversation_id": null
-}
-```
+## 🚀 **CD Pipelines**
+### Staging
+Workflow: `.github/workflows/deploy-staging.yml`
+- Trigger: push to `main`
+- Build image, tag with commit SHA
+- Push to Google Artifact Registry
+- Deploy to **Cloud Run (staging)**
 
-Response:
-```json
-{
-  "conversation_id": "3e4b6c8d-7c60-4e4c-9d24-4bfc4d1d2f3b",
-  "reply": "AI response here"
-}
-```
-
----
-
-## ⚙️ **Environment**
-Create `.env` from `.env.example`:
-```env
-DATABASE_URL=postgresql+psycopg2://ai_user:ai_password@localhost:5432/ai_chatbot
-JWT_SECRET_KEY=change_me
-JWT_ALGORITHM=HS256
-JWT_EXPIRE_MINUTES=30
-OPENAI_API_KEY=
-```
+### Production
+Workflow: `.github/workflows/deploy-production.yml`
+- Trigger: GitHub Release (published)
+- Build image, tag with release version
+- Push to Google Artifact Registry
+- Deploy to **Cloud Run (production)**
 
 ---
 
-## 🚀 **Local Setup**
+## 🔐 **Secrets Management**
+All sensitive values are injected via **GitHub Secrets** and scoped by **GitHub Environments**:
+- `GCP_PROJECT_ID`
+- `GCP_REGION`
+- `GCP_SERVICE_ACCOUNT_KEY`
+- `DATABASE_URL`
+- `OPENAI_API_KEY`
+- `JWT_SECRET_KEY`
+
+Use **environment-specific secrets** for `staging` and `production` to isolate configs.
+
+---
+
+## 📦 **Docker**
+Production-grade Docker image:
+- Multi-stage build
+- Non-root user
+- Health check wired to `/health`
+- Minimal slim base image
+
+---
+
+## 🧪 **Local Testing**
 ```bash
 pip install -r requirements.txt
-alembic upgrade head
-uvicorn app.main:app --reload
-```
-
----
-
-## 🐳 **Docker Setup**
-```bash
-docker-compose up --build
-```
-
----
-
-## 🧪 **Testing**
-```bash
 pytest
 ```
 
 ---
 
-## 📈 **Portfolio Value**
-- Clean separation of concerns and typed IO models
-- Secure JWT authentication with bcrypt hashing
-- Conversation persistence and AI memory
-- Production-ready Docker + Alembic migrations
+## ↩️ **Rollback Strategy**
+Cloud Run retains prior revisions. Roll back by re-deploying a previous image tag
+or selecting an earlier revision in Cloud Run.
 
