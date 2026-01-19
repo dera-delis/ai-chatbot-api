@@ -20,5 +20,9 @@ jobs:
       - name: Run tests
         env:
           PYTHONPATH: .
+          DATABASE_URL: postgresql+psycopg2://user:pass@localhost:5432/ci
+          JWT_SECRET_KEY: ci_dummy_secret
+          JWT_ALGORITHM: HS256
+          JWT_EXPIRE_MINUTES: 30
         run: pytest
 
