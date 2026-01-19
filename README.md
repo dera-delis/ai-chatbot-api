@@ -6,12 +6,14 @@
 [![Alembic](https://img.shields.io/badge/Alembic-Migrations-black)](https://alembic.sqlalchemy.org/)
 [![Docker](https://img.shields.io/badge/Docker-24.0-2496ED?logo=docker&logoColor=white)](https://docker.com/)
 [![Status](https://img.shields.io/badge/Status-Live%20Production-brightgreen)](https://p01--ai-chatbot-api--zn54zt65xhrv.code.run/docs)
+[![API Docs](https://img.shields.io/badge/API%20Docs-Swagger-green?style=for-the-badge)](https://p01--ai-chatbot-api--zn54zt65xhrv.code.run/docs)
 
 Production-grade **FastAPI** backend for a conversation-aware AI assistant. Built with **PostgreSQL**, **SQLAlchemy 2.0**, **Alembic**, **JWT auth**, and **OpenAI** integration. Clean separation of concerns, typed IO, and deployment-ready Docker setup.
 
 > ✅ **JWT Auth** · 🧠 **LLM Integration** · 🐳 **Dockerized** · 🧪 **Tested**
 
-**Live API Docs:** https://p01--ai-chatbot-api--zn54zt65xhrv.code.run/docs
+**Live API Docs:**  
+[![Open Docs](https://img.shields.io/badge/Open%20Docs-Live%20Swagger-1f9d6a?style=for-the-badge)](https://p01--ai-chatbot-api--zn54zt65xhrv.code.run/docs)
 
 ---
 
