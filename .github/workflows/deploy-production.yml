@@ -47,6 +47,7 @@ jobs:
             DATABASE_URL=${{ secrets.DATABASE_URL }}
             OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
             JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}
+            CORS_ORIGINS=${{ secrets.CORS_ORIGINS }}
             JWT_ALGORITHM=HS256
             JWT_EXPIRE_MINUTES=30
 
