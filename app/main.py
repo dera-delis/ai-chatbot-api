@@ -1,4 +1,5 @@
 import logging
+import os
 import sys
 
 from fastapi import FastAPI
@@ -15,9 +16,17 @@ logging.basicConfig(
 
 app = FastAPI(title="AI Chatbot API", version="1.0.0")
 
+cors_env = os.getenv("CORS_ORIGINS")
+default_origins = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "https://ai-chatbot-app-three.vercel.app",
+]
+allow_origins = [origin.strip() for origin in cors_env.split(",")] if cors_env else default_origins
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
+    allow_origins=allow_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
