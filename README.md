@@ -17,7 +17,7 @@ Automated tests, Docker image builds, registry pushes, and Cloud Run deployments
 ---
 
 ## 📌 **Table of Contents**
-- [🏗️ Architecture](#️-architecture)
+- [🏗️ DevOps Architecture](#️-devops-architecture)
 - [🔎 Observability](#-observability)
 - [🧪 CI Pipeline](#-ci-pipeline)
 - [🚀 CD Pipelines](#-cd-pipelines)
@@ -25,14 +25,43 @@ Automated tests, Docker image builds, registry pushes, and Cloud Run deployments
 - [📦 Docker](#-docker)
 - [🧪 Local Testing](#-local-testing)
 - [↩️ Rollback Strategy](#️-rollback-strategy)
+- [✅ Why This Project Matters](#-why-this-project-matters)
 
 ---
 
-## 🏗️ **Architecture**
-```
-GitHub -> GitHub Actions -> Artifact Registry -> Cloud Run (staging/prod)
-                                    |
-                                 PostgreSQL
+## 🏗️ **DevOps Architecture**
+Flow: **GitHub → GitHub Actions → Docker Build → Artifact Registry → Cloud Run**
+
+Two-environment model:
+- `main` → **staging** deploy
+- GitHub Release → **production** deploy
+
+Pipeline behavior:
+- **CI**: lint + tests
+- **Staging**: build, push, deploy
+- **Production**: build, push, deploy via release
+
+Why this mirrors production systems:
+- Release-gated promotion to production
+- Environment isolation with separate Cloud Run services
+- Immutable image artifacts
+- Secrets managed outside the repo
+
+```mermaid
+graph TD
+  Dev[Developer Push]
+  GH[GitHub Repo]
+  CI[GitHub Actions CI]
+  AR[Artifact Registry]
+  STG[Cloud Run - Staging]
+  REL[GitHub Release]
+  PROD[Cloud Run - Production]
+
+  Dev --> GH
+  GH --> CI
+  CI --> AR
+  AR --> STG
+  REL --> PROD
 ```
 
 Key components:
@@ -110,4 +139,16 @@ Cloud Run retains prior revisions. Roll back by re-deploying a previous image ta
 or selecting an earlier revision in Cloud Run.
 
 _Pipeline trigger note: update to validate CI/CD._
+
+---
+
+## ✅ **Why This Project Matters**
+This repository demonstrates:
+- CI/CD design with clear promotion paths
+- Release-driven production deployments
+- Staging vs production environment isolation
+- Containerized, immutable production workloads
+- Secrets management via GitHub Environments
+- Cloud-native runtime readiness
+- Operational focus beyond application code
 
